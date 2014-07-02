@@ -43,15 +43,6 @@
             android:layout_weight="0.8"
             android:textSize="20sp"
             android:textStyle="italic" />
-
-        <Button
-            android:id="@+id/punteggio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/tasto_inizio_drawable"
-            android:enabled="false"
-            android:text="@string/punteggio"
-            android:textSize="16sp" />
     </LinearLayout>
 
 </LinearLayout>

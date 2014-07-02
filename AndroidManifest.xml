@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lorenzobraghetto.cooptdmorienteeringvillabea"
+    package="com.lorenzobraghetto.cooptdmaltavia"
     android:versionCode="1"
     android:versionName="0.1" >
 
@@ -17,14 +17,14 @@
     <uses-permission android:name="android.permission.NFC" />
 
     <application
-        android:name="com.lorenzobraghetto.cooptdmorienteeringvillabea.OrientiringApplication"
+        android:name="com.lorenzobraghetto.cooptdmaltavia.AltaViaApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
         <activity
-            android:name="com.lorenzobraghetto.cooptdmorienteeringvillabea.MainActivity"
+            android:name="com.lorenzobraghetto.cooptdmaltavia.MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan" >
             <intent-filter>
@@ -34,15 +34,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.lorenzobraghetto.cooptdmorienteeringvillabea.MapsActivity"
+            android:name="com.lorenzobraghetto.cooptdmaltavia.MapsActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.Sherlock.Light" >
         </activity>
         <activity
-            android:name="com.lorenzobraghetto.cooptdmorienteeringvillabea.CompassActivity"
+            android:name="com.lorenzobraghetto.cooptdmaltavia.CompassActivity"
             android:theme="@style/Theme.Sherlock.Light" />
         <activity
-            android:name="com.lorenzobraghetto.cooptdmorienteeringvillabea.EndActivity"
+            android:name="com.lorenzobraghetto.cooptdmaltavia.EndActivity"
             android:theme="@style/Theme.Sherlock.Light" />
     </application>
 

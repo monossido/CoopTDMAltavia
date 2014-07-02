@@ -1,7 +1,7 @@
-CoppTDMOrientiring
-===============
+CoopTDMAltavia
+==============
 
-Orientiring a Villa Beatrice [http://www.museicollieuganei.it](http://www.museicollieuganei.it)
+Applicazione per l'alta via dei colli euganei realizzata per Cooperativa Terra di Mezzo [http://www.museicollieuganei.it](http://www.museicollieuganei.it)
 
 Applicazione sviluppata da **Lorenzo Braghetto** [lorenzobraghetto.com](http://lorenzobraghetto.com) per **Cooperativa Terra di Mezzo**
 
@@ -14,3 +14,4 @@ Software Open Source utilizzato:
 - [CompassLibrary](https://github.com/monossido/CompassLibrary)
 
 Grafica creata da **Andrea Marson**
+=======
