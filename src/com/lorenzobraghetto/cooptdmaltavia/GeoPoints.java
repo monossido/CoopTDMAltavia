@@ -1,6 +1,7 @@
 package com.lorenzobraghetto.cooptdmaltavia;
 
 import org.mapsforge.core.model.LatLong;
+import org.mapsforge.map.layer.overlay.Marker;
 
 import android.location.Location;
 
@@ -11,6 +12,7 @@ public class GeoPoints {
 	private String name;
 	private String testo = "";
 	private String code;
+	private Marker marker;
 
 	public GeoPoints(double lat, double lon, String name, String code, String testo) {
 		this.lat = lat;
@@ -53,6 +55,14 @@ public class GeoPoints {
 		temp.setLatitude(lat);
 		temp.setLongitude(lon);
 		return temp;
+	}
+
+	public void setMarker(Marker marker) {
+		this.marker = marker;
+	}
+
+	public Marker getMarker() {
+		return marker;
 	}
 
 }

@@ -6,15 +6,16 @@
     android:orientation="vertical" >
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:gravity="top" >
 
         <LinearLayout
             android:id="@+id/quiz_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:weightSum="2" >
@@ -32,48 +33,6 @@
                 android:textStyle="italic" >
             </com.lorenzobraghetto.utils.AutoResizeTextView>
 
-            <EditText
-                android:id="@+id/edittext_name"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="0.2"
-                android:hint="nome" />
-
-            <Button
-                android:id="@+id/button_start"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_weight="0.2"
-                android:background="@drawable/tasto_inizio_drawable"
-                android:text="@string/inizia"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/info"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="0.2"
-                android:background="@drawable/tasto_inizio_drawable"
-                android:text="@string/info"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/about"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="0.2"
-                android:background="@drawable/tasto_inizio_drawable"
-                android:text="@string/about"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -87,7 +46,66 @@
                 android:padding="5dp"
                 android:text="@string/testo_iniziale"
                 android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edittext_name"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.2"
+                android:hint="nome" />
         </LinearLayout>
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/rel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp" >
+
+        <ImageView
+            android:id="@+id/palo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/palo" />
+
+        <Button
+            android:id="@+id/button_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/palo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/tasto_inizio1_drawable"
+            android:text="@string/inizia"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/button_start"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/tasto_inizio2_drawable"
+            android:text="@string/info"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/info"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/tasto_inizio2_drawable"
+            android:text="@string/about"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
 </LinearLayout>

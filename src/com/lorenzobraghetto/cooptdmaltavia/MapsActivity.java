@@ -3,8 +3,6 @@ package com.lorenzobraghetto.cooptdmaltavia;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.mapsforge.core.graphics.Bitmap;
 import org.mapsforge.core.graphics.Style;
@@ -65,7 +63,6 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.lorenzobraghetto.compasslibrary.Geopoint;
 import com.lorenzobraghetto.utils.MyLocationOverlay;
 
 public class MapsActivity extends SherlockActivity {
@@ -75,17 +72,15 @@ public class MapsActivity extends SherlockActivity {
 	protected TileCache tileCache;
 	private TileDownloadLayer downloadLayer;
 	private MyLocationOverlay myLocationOverlay;
-	private TextView timerText;
 	private List<GeoPoints> listGeoPoints;
 	private ScrollView hint_overlay;
 	private TextView testo;
 	private EditText codeEditText;
-	public static final double MINIMUM_DISTANCE_TO_TRIGGER = 20;
-	private int i = 0;
+	public static final double MINIMUM_DISTANCE_TO_TRIGGER_CLICKED = 10;
 	private LayerManager layerManager;
 	private LocationManager locationManager;
 	private LocationListener locationListener;
-	private GeoPoints currentPoint;
+	private GeoPoints currentClickedPoint;
 	protected Location currentLocation;
 	private Marker marker;
 	private NfcAdapter mNfcAdapter;
@@ -96,7 +91,6 @@ public class MapsActivity extends SherlockActivity {
 	private String user;
 	private ImageView btn_myl;
 	private MapViewPosition mapViewPosition;
-	private String tempo;
 	private TextView hint_titolo;
 	private boolean hintVisible = false;
 	protected boolean toastNearShowed;
@@ -124,12 +118,6 @@ public class MapsActivity extends SherlockActivity {
 
 			public void onLocationChanged(Location location) {
 				currentLocation = location;
-				GeoPoints point = isNearTo(location);
-				if (point != null && !toastNearShowed) {
-					toastNearShowed = true;
-					Toast.makeText(MapsActivity.this, R.string.testo_vicino_alpunto, Toast.LENGTH_LONG).show();
-				}
-
 			}
 
 			public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -241,7 +229,7 @@ public class MapsActivity extends SherlockActivity {
 				Log.e("TagDispatch", e.toString());
 			}
 		}
-		if (s.equalsIgnoreCase(currentPoint.getCode())) {
+		if (s.equalsIgnoreCase(currentClickedPoint.getCode())) {
 			Toast.makeText(MapsActivity.this, R.string.codice_esatto, Toast.LENGTH_LONG).show();
 			pointFound();
 			codeEditText.setText("");
@@ -295,9 +283,6 @@ public class MapsActivity extends SherlockActivity {
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		super.onMenuItemSelected(featureId, item);
 		switch (item.getItemId()) {
-		case R.id.bussola:
-			CompassActivity.startActivity(this, new Geopoint(currentPoint.getLocation()), currentPoint.getName());
-			break;
 		case R.id.screen_on:
 			if (!item.isChecked()) {
 				getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -388,15 +373,12 @@ public class MapsActivity extends SherlockActivity {
 
 		addLayers(tileCache, mapViewPosition);
 
-		showNextPoint();
+		showPoints();
 	}
 
-	private void showNextPoint() {
-		if (i < listGeoPoints.size()) {
-			currentPoint = listGeoPoints.get(i);
-
-			if (marker != null)
-				layerManager.getLayers().remove(marker);
+	private void showPoints() {
+		for (int i = 0; i < listGeoPoints.size(); i++) {
+			GeoPoints currentPoint = listGeoPoints.get(i);
 
 			Marker markerTemp = Utils.createTappableMarker(this,
 					R.drawable.ic_transit_notice_information, currentPoint.getLatLon());
@@ -404,21 +386,31 @@ public class MapsActivity extends SherlockActivity {
 
 				@Override
 				public boolean onTap(LatLong tapLatLong, Point layerXY, Point tapXY) {
-					if (this.contains(layerXY, tapXY))
-						drawHint();
+					if (contains(layerXY, tapXY)) {
+						currentClickedPoint = getClickedPoint(this);
+						if (currentClickedPoint != null)
+							drawHint();
+					}
 					return super.onTap(tapLatLong, layerXY, tapXY);
 				}
-			};
 
+			};
+			currentPoint.setMarker(marker);
 			layerManager.getLayers().add(marker);
-			i++;
-		} else {
-			Intent end = new Intent(this, EndActivity.class);
-			end.putExtra("user", user);
-			end.putExtra("tempo", tempo);
-			finish();
-			startActivity(end);
 		}
+		/*
+		 * else { Intent end = new Intent(this, EndActivity.class);
+		 * end.putExtra("user", user); end.putExtra("tempo", tempo); finish();
+		 * startActivity(end); }
+		 */
+	}
+
+	private GeoPoints getClickedPoint(Marker marker) {
+		for (GeoPoints point : listGeoPoints) {
+			if (point.getMarker().equals(marker))
+				return point;
+		}
+		return null;
 	}
 
 	private TextWatcher codeWatcher = new TextWatcher() {
@@ -433,7 +425,7 @@ public class MapsActivity extends SherlockActivity {
 
 		@Override
 		public void afterTextChanged(Editable s) {
-			if (s.toString().equalsIgnoreCase(currentPoint.getCode())) {
+			if (s.toString().equalsIgnoreCase(currentClickedPoint.getCode())) {
 				Toast.makeText(MapsActivity.this, R.string.codice_esatto, Toast.LENGTH_LONG).show();
 				pointFound();
 				codeEditText.setText("");
@@ -449,7 +441,7 @@ public class MapsActivity extends SherlockActivity {
 		testo.setVisibility(View.GONE);
 		testoOk.setVisibility(View.GONE);
 
-		hint_titolo.setText(currentPoint.getName());
+		hint_titolo.setText(currentClickedPoint.getName());
 		codeEditText.addTextChangedListener(codeWatcher);
 	}
 
@@ -467,7 +459,7 @@ public class MapsActivity extends SherlockActivity {
 		codeEditText.setVisibility(View.GONE);
 		testo.setVisibility(View.VISIBLE);
 		testoOk.setVisibility(View.VISIBLE);
-		testo.setText(currentPoint.getTesto());
+		testo.setText(currentClickedPoint.getTesto());
 
 		testoOk.setOnClickListener(new OnClickListener() {
 
@@ -478,7 +470,7 @@ public class MapsActivity extends SherlockActivity {
 						getSystemService(Context.INPUT_METHOD_SERVICE);
 
 				mgr.hideSoftInputFromWindow(mapView.getWindowToken(), 0);
-				showNextPoint();
+				//showNextPoint();
 			}
 		});
 
@@ -489,7 +481,7 @@ public class MapsActivity extends SherlockActivity {
 	}
 
 	protected MapPosition getInitialPosition() {
-		return new MapPosition(new LatLong(45.276956, 11.679168), (byte) 17);
+		return new MapPosition(new LatLong(45.334234, 11.691854), (byte) 12);
 	}
 
 	/**
@@ -525,42 +517,12 @@ public class MapsActivity extends SherlockActivity {
 		mapView.getMapScaleBar().setVisible(true);
 	}
 
-	protected GeoPoints isNearTo(Location location) {
-		if (calculationDistance(location, currentPoint.getLat(), currentPoint.getLon()) < MINIMUM_DISTANCE_TO_TRIGGER)
-			return currentPoint;
-		return null;
-	}
-
-	public double calculationDistance(Location current,
+	private double calculationDistance(Location current,
 			double finalLat, double finalLong) {
 		Location locationB = new Location("point B");
 		locationB.setLatitude(finalLat);
 		locationB.setLongitude(finalLong);
 		return current.distanceTo(locationB);
-	}
-
-	private void startTimer(long duration, long interval) {
-		Timer timer = new Timer(); //timer
-
-		//il metodo run viene eseguito ad ogni scadenza del timer
-		timer.scheduleAtFixedRate(
-				new TimerTask() {
-					int i = 0;
-
-					public void run() {
-						i++;
-						runOnUiThread(new Runnable() {
-
-							@Override
-							public void run() {
-								tempo = secondsToString(i);
-								timerText.setText(tempo);
-							}
-						});
-					}
-				},
-				0, 1000
-				);
 	}
 
 	private String secondsToString(int improperSeconds) {

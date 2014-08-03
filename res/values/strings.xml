@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Alta Via</string>
+    <string name="app_name">Altavia Colli Euganei</string>
     <string name="hint_desc">Quando arrivi al pannello informativo, puoi usare NFC se il tuo telefono lo supporta oppure puoi inserire il codice</string>
     <string name="inizia">Inizia</string>
     <string name="about">About</string>
